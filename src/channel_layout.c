@@ -456,7 +456,8 @@ enum SoundIoChannelId soundio_parse_channel_id(const char *str, int str_len) {
             const char *alias = channel_names[id][i];
             if (!alias)
                 break;
-            int alias_len = strlen(alias);
+            /* disable warning */
+            int alias_len = (int)strlen(alias);
             if (soundio_streql(alias, alias_len, str, str_len))
                 return (enum SoundIoChannelId)id;
         }

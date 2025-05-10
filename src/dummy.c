@@ -57,7 +57,8 @@ static void playback_thread_run(void *arg) {
 
         double total_time = soundio_os_get_time() - start_time;
         long total_frames = total_time * outstream->sample_rate;
-        int frames_to_kill = total_frames - frames_consumed;
+        /* disable warning */
+        int frames_to_kill = (int)(total_frames - frames_consumed);
         int read_count = soundio_int_min(frames_to_kill, fill_frames);
         int byte_count = read_count * outstream->bytes_per_frame;
         soundio_ring_buffer_advance_read_ptr(&osd->ring_buffer, byte_count);
@@ -104,8 +105,10 @@ static void capture_thread_run(void *arg) {
         int free_frames = free_bytes / instream->bytes_per_frame;
 
         double total_time = soundio_os_get_time() - start_time;
-        long total_frames = total_time * instream->sample_rate;
-        int frames_to_kill = total_frames - frames_consumed;
+        /* disable warning */
+        long total_frames = (long)(total_time * instream->sample_rate);
+        /* disable warning */
+        int frames_to_kill = (int)(total_frames - frames_consumed);
         int write_count = soundio_int_min(frames_to_kill, free_frames);
         int byte_count = write_count * instream->bytes_per_frame;
         soundio_ring_buffer_advance_write_ptr(&isd->ring_buffer, byte_count);
